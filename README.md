@@ -3,16 +3,11 @@
 </p>
 
 <h1>Setting Up Network File Shares and Permissions</h1>
-This project describe the process of setting up network file shares and permissions using Windows Server and Active Directory.  The video will guide you visually through the steps involved and then further on there are some notes and screenshots provided for highlights of some or all of the material.<br />
-
-
-<h2>Video Demonstration</h2>
-
-### [Network File Shares and Permissions](https://drive.google.com/file/d/1V_4tRnOFsca0z34e6vLhDkQvt7F80qUj/view?usp=drive_link)
+This project describe how files and folders are shared over the network and how permissions are granted to different group of people in different levels of access using Windows Server and Active Directory.<br />
 
 <h2>Environments and Technologies Used</h2>
 
-- Microsoft Azure (Virtual Machines/Compute)
+- Microsoft Azure (Virtual Machines/Computer)
 - Remote Desktop
 - Active Directory Domain Services
 - PowerShell
