@@ -70,7 +70,7 @@ Step 5: Restart Client-1 to allow the new permission settings to enable. Next ac
 
 ## Clean Up
 
-Once you have completed the lab and no longer need the resources, ensure you delete the virtual machines and resource groups on Azure to avoid unnecessary usage of your resources.
+Once you have completed the lab and no longer need the resources, ensure you delete the virtual machines and resource groups on Azure to minimize charges.
 
 ---
 <br />
