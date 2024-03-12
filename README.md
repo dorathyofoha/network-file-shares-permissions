@@ -25,6 +25,7 @@ This project describe how files and folders are shared over the network and how 
 - Step 3: Test Permissions
 - Step 4: Create Security Group & Grant Additional Permissions
 - Step 5: Test Security Group Members' Access
+- Step 6: Clean up VMs.
 
 <h2>Actions and Observations</h2>
 
