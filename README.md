@@ -3,13 +3,14 @@
 </p>
 
 <h1>Setting Up Network File Shares and Permissions</h1>
-This project describe how files and folders are shared over the network and how permissions are granted to different group of people in different levels of access using Windows Server and Active Directory.<br />
+This project describe how files and folders are shared over the network and how permissions are granted to different groups of people in different levels of access. This is all done within Active Directory on our Client Virtual Machine in Azure.<br />
 
 <h2>Environments and Technologies Used</h2>
 
 - Microsoft Azure (Virtual Machines/Computer)
 - Remote Desktop
-- Active Directory Domain Services
+- Active Directory Domain Service
+- Security Groups
 - PowerShell
 
 <h2>Operating Systems Used </h2>
@@ -17,79 +18,60 @@ This project describe how files and folders are shared over the network and how 
 - Windows Server 2022
 - Windows 10 (21H2)
 
-## Prerequisites
+<h2>High-Level Steps</h2>
 
-To follow along with this tutorial, you will need the following:
+- Step 1: Login to both VMs
+- Step 2: Create Shared Folders & Set Permissions
+- Step 3: Test Permissions
+- Step 4: Create Security Group & Grant Additional Permissions
+- Step 5: Test Security Group Members' Access
 
-- Windows Server installed and configured.
-- Active Directory domain set up.
-- Two client machines connected to the domain.
-- Administrative access to the server and clients.
+<h2>Actions and Observations</h2>
 
-## Part 1: Creating Security Groups
+<p>
+<img src="https://imgur.com/OBFtOuo.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+</p>
+<p>
+Step 1: Remote Desktop into both VMs that were used in the previous lab (DC-1 & Client-1). These are the subject VMs that will be used again for this lab with DC-1 being the Domain Controller once again. 
+</p>
+<br />
 
-In this section, we will create a security group that will be used to assign permissions to the network file share.
+<p>
+<img src="https://imgur.com/smc3Ano.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<img src="https://imgur.com/Ar3Paox.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+</p>
+<p>
+Step 2: Create four folders on DC-1's C: drive all with different access permissions: "read-access" - permission: read, "write-access" - permission read/write", "no-access" - permission none, "accounting" - permission read/write.
+</p>
+<br />
 
-1. Open the Active Directory Users and Computers management console on the server.
-2. Expand the domain and navigate to the "Users" container.
-3. Right-click on the container and select "New" > "Group".
-4. Enter a name for the group (e.g., "Accountants") and click "OK" to create the group.
-5. Once the group is created, you can add users to it by double-clicking on the group, selecting the "Members" tab, and clicking "Add".
+<p>
+<img src="https://imgur.com/y5byjxa.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+</p>
+<p>
+Step 3: Log into a random employee account on Client-1 to test the newly added permissions/access created in step #2. Type "\\dc-1" into file explorer to show all shared folders created on the domain in step #2. Next, click any of the created shared folders and try to perfrom an action that does not align with the permissions used for said folder. You should not be allowed to open the folder titled "no-access" or write in the folder titled "read-access", etc.
+</p>
+<br />
 
-*Screenshots: Creating a Security Group*
+<p>
+<img src="https://imgur.com/xSXLxLo.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+</p>
+<p>
+Step 4: Create an "Organizational Unit" (OU) in Active Directory on DC-1 titled "Security Group". Next, create a new group within the OU titled "Accountants". Add Client-1's account to the list of "Accountant" members in the group (this will give the client-1 account access to the shared accountant folder created earlier).
+</p>
+<br />
 
-![image](https://github.com/JasonDelahoussaye/NetworkFileSharesAndPermissions/assets/106440235/c7b510ca-0f01-4168-bd7b-e304c3463f76) ![image](https://github.com/JasonDelahoussaye/NetworkFileSharesAndPermissions/assets/106440235/fe3882b3-c563-4a99-ae8a-0e7979983bff) ![image](https://github.com/JasonDelahoussaye/NetworkFileSharesAndPermissions/assets/106440235/b3d6699a-f0c5-451c-bc18-acb6d13daf2d)
-
-
-
-## Part 2: Creating a Network File Share
-
-Now, let's create a network file share that will be accessible to the security group we created.
-
-1. Open the File Explorer on the server.
-2. Right-click on the folder you want to share and select "Properties".
-3. In the Properties window, go to the "Sharing" tab.
-4. Click on the "Advanced Sharing" button.
-5. Check the box that says "Share this folder" and click "Permissions".
-6. In the Permissions window, click "Add" to add the security group.
-7. Type the name of the security group in the text field and click "Check Names" to verify it.
-8. Once the group is verified, click "OK" to add it.
-9. In the Permissions window, select the security group and assign the desired permissions (e.g., read, write, modify).
-
-*Screenshot 2: Creating a Network File Share*
-![image](https://github.com/JasonDelahoussaye/NetworkFileSharesAndPermissions/assets/106440235/57e46d40-f025-4e3f-a90c-93dc8dcf9e27)
-
-
-## Part 3: Assigning Permissions to a Folder
-
-In this section, we will give the security group read and write permissions to a specific folder.
-
-1. Go to the folder you want to assign permissions to on the server.
-2. Right-click on the folder and select "Properties".
-3. In the Properties window, go to the "Security" tab.
-4. Click on the "Edit" button to modify the permissions.
-5. In the Permissions window, click "Add" to add the security group.
-6. Type the name of the security group in the text field and click "Check Names" to verify it.
-7. Once the group is verified, click "OK" to add it.
-8. Select the security group from the list and check the boxes for the desired permissions (e.g., read, write) under the "Allow" column.
-
-
-*Screenshot 3: Assigning Permissions to a Folder*
-![image](https://github.com/JasonDelahoussaye/NetworkFileSharesAndPermissions/assets/106440235/1059164f-7db1-4339-8f8d-0afe3b7324b9)
-
-## Testing the Permissions
-
-To test the permissions, go to the client machine and try accessing the shared folder using a user account that is a member of the security group.
-
-*Screenshot 4: Testing Permissions [fail shown]*
-
-![image](https://github.com/JasonDelahoussaye/NetworkFileSharesAndPermissions/assets/106440235/eee215e0-b476-4281-915d-593c60d7e516)
-
+<p>
+<img src="https://imgur.com/FLEB0F4.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+</p>
+<p>
+Step 5: Restart Client-1 to allow the new permission settings to enable. Next access the shared "accountant" folder in \\dc-1  to verify access was successfully set up and granted for this user/employee. This is the conclusion of the lab.
+</p>
 
 ## Clean Up
 
-Once you have completed the lab and no longer need the resources, make sure to shut down or delete the virtual machines to avoid unnecessary usage of your resources.
+Once you have completed the lab and no longer need the resources, ensure you delete the virtual machines and resource groups on Azure to avoid unnecessary usage of your resources.
 
 ---
+<br />
 
-I hope this tutorial helps you understand network file shares and permissions better!
